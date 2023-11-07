@@ -30,11 +30,42 @@
     <div id="menu" class="fas fa-bars"></div>
 
     <section class="home" id="home">
-        <h3>HI THERE !</h3>
-        <h1>我是<span>許正祐</span></h1>
+        <h3 id="greeting-1"></h3>
+        <h1>我是<span class="typing-animation">許正祐</span></h1>
         <p></p>
         <a href="#about"><button class="btn">about me<i class="fas fa-user"></i></button></a>
     </section>
+<script>
+    const typingAnimation = document.querySelector('.typing-animation');
+const text = typingAnimation.textContent;
+let i = 0;
+let isDeleting = false;
+
+function typeEffect() {
+    const speed = 250; // 調整打字速度
+
+    if (i < text.length && !isDeleting) {
+        typingAnimation.textContent = text.substring(0, i + 1);
+        i++;
+        setTimeout(typeEffect, speed);
+    } else if (i > 0 && isDeleting) {
+        typingAnimation.textContent = text.substring(0, i - 1);
+        i--;
+        setTimeout(typeEffect, speed);
+    } else {
+        isDeleting = !isDeleting;
+        setTimeout(typeEffect, speed);
+    }
+}
+
+typeEffect();
+
+</script>    
+    
+    
+    
+    
+    
 
     <section class="about" id="about">
         <h1 class="heading"><span>關於</span>我</h1>
@@ -127,13 +158,19 @@
     <div class="box-container">
         
         <div  class="box">
+            <a href="https://c110164110.github.io/">
             <img src="img/img1.jpg" alt="">
+        </a>
         </div>
         <div  class="box">
+            <a href="https://c110164110.github.io/dota2.github.io/">
             <img src="img/img2.jpg" alt="">
+        </a>
         </div> 
         <div  class="box">
-            <img src="img/img3.jpg" alt="">
+            <a href="https://c110164110.github.io/personalwebpage/">
+            <img src="img/img3.gif" alt="">
+        </a>
         </div> 
         <div  class="box">
             <img src="img/img4.png" alt="">
