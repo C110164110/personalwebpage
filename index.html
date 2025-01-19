@@ -310,100 +310,175 @@
         <section class="testimonials">
 
           <h3 class="h3 testimonials-title">回饋</h3>
-
-          <ul class="testimonials-list has-scrollbar">
-
+        
+          <ul class="testimonials-list has-scrollbar" id="testimonials-list">
+            <!-- 靜態回饋 -->
             <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-
+              <div class="content-card">
                 <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/avatar-1.png" alt="Daniel lewis" width="60" data-testimonials-avatar>
+                  <img src="./assets/images/avatar-1.png" alt="Daniel lewis" width="60" height="60">
                 </figure>
-
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>Daniel lewis</h4>
-
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
-                    lot of experience
-                    and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
-                    consectetur adipiscing
-                    elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
-                  </p>
+                <h4 class="h4 testimonials-item-title">Daniel lewis</h4>
+                <div class="testimonials-text">
+                  <p>我們非常滿意這份工作，謝謝您的付出！</p>
                 </div>
-
               </div>
             </li>
-
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/avatar-2.png" alt="Jessica miller" width="60" data-testimonials-avatar>
-                </figure>
-
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>Jessica miller</h4>
-
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
-                    lot of experience
-                    and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
-                    consectetur adipiscing
-                    elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
-                  </p>
-                </div>
-
-              </div>
-            </li>
-
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/avatar-3.png" alt="Emily evans" width="60" data-testimonials-avatar>
-                </figure>
-
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>Emily evans</h4>
-
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
-                    lot of experience
-                    and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
-                    consectetur adipiscing
-                    elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
-                  </p>
-                </div>
-
-              </div>
-            </li>
-
-            <li class="testimonials-item">
-              <div class="content-card" data-testimonials-item>
-
-                <figure class="testimonials-avatar-box">
-                  <img src="./assets/images/avatar-4.png" alt="Henry william" width="60" data-testimonials-avatar>
-                </figure>
-
-                <h4 class="h4 testimonials-item-title" data-testimonials-title>Henry william</h4>
-
-                <div class="testimonials-text" data-testimonials-text>
-                  <p>
-                    Richard was hired to create a corporate identity. We were very pleased with the work done. She has a
-                    lot of experience
-                    and is very concerned about the needs of client. Lorem ipsum dolor sit amet, ullamcous cididt
-                    consectetur adipiscing
-                    elit, seds do et eiusmod tempor incididunt ut laborels dolore magnarels alia.
-                  </p>
-                </div>
-
-              </div>
-            </li>
-
           </ul>
-
+        
+          <!-- 使用者回饋表單 -->
+          <div class="feedback-form">
+            <h4>提交您的回饋</h4>
+            <form id="feedbackForm">
+              <label for="name">名稱：</label>
+              <input type="text" id="name" name="name" placeholder="輸入您的名稱" required>
+        
+              <label for="feedback">回饋內容：</label>
+              <textarea id="feedback" name="feedback" rows="4" placeholder="輸入您的回饋" required></textarea>
+        
+              <label for="emojiPicker">選擇頭像：</label>
+              <select id="emojiPicker">
+                <option value="😀">😀</option>
+                <option value="😎">😎</option>
+                <option value="😊">😊</option>
+                <option value="🤩">🤩</option>
+                <option value="😍">😍</option>
+                <option value="🥳">🥳</option>
+              </select>
+        
+              <button type="submit">提交回饋</button>
+            </form>
+          </div>
+        
+          <!-- Emoji 動態效果容器 -->
+          <div id="emojiEffect" class="emoji-effect"></div>
+        
         </section>
+        
+        <style>
+        /* 美化表單 */
+        .feedback-form {
+          margin-top: 20px;
+          padding: 20px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+        }
+        
+        .feedback-form h4 {
+          margin-bottom: 15px;
+          font-size: 18px;
+          font-weight: bold;
+          color: #ddd;
+        }
+        
+        .feedback-form label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: 500;
+          color: #ddd;
+        }
+        
+        .feedback-form input[type="text"],
+        .feedback-form textarea,
+        .feedback-form select {
+          width: 100%;
+          padding: 8px 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          font-size: 14px;
+        }
+        
+        .feedback-form button {
+          display: inline-block;
+          padding: 10px 20px;
+          background-color: #4caf50;
+          color: white;
+          font-size: 16px;
+          font-weight: bold;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+        
+        .feedback-form button:hover {
+          background-color: #45a049;
+        }
+        
+        /* Emoji 動態效果樣式 */
+        .emoji-effect {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 0px; /* 默認隱藏 */
+          display: none;
+          z-index: 9999;
+          animation: emojiFadeOut 0.5s ease-out forwards;
+        }
+        
+        @keyframes emojiFadeOut {
+          0% {
+            font-size: 0px;
+            opacity: 1;
+          }
+          50% {
+            font-size: 200px;
+            opacity: 1;
+          }
+          100% {
+            font-size: 200px;
+            opacity: 0;
+          }
+        }
+        </style>
+        
+        <script>
+          // 回饋表單處理
+          document.getElementById("feedbackForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // 防止表單提交後刷新頁面
+        
+            const name = document.getElementById("name").value;
+            const feedback = document.getElementById("feedback").value;
+            const emoji = document.getElementById("emojiPicker").value;
+        
+            const testimonialsList = document.getElementById("testimonials-list");
+            const emojiEffect = document.getElementById("emojiEffect");
+        
+            // 顯示 Emoji 動態效果
+            emojiEffect.textContent = emoji;
+            emojiEffect.style.display = "block";
+        
+            // 延遲 0.5 秒後添加回饋並隱藏動態效果
+            setTimeout(() => {
+              emojiEffect.style.display = "none"; // 隱藏 Emoji 效果
+        
+              // 新增回饋項目到列表
+              const newItem = document.createElement("li");
+              newItem.classList.add("testimonials-item");
+        
+              newItem.innerHTML = `
+                <div class="content-card">
+                  <figure class="testimonials-avatar-box">
+                    <span style="font-size: 36px;">${emoji}</span>
+                  </figure>
+                  <h4 class="h4 testimonials-item-title">${name}</h4>
+                  <div class="testimonials-text">
+                    <p>${feedback}</p>
+                  </div>
+                </div>
+              `;
+        
+              testimonialsList.appendChild(newItem);
+        
+              // 清空表單
+              document.getElementById("feedbackForm").reset();
+            }, 500); // 0.5 秒後執行
+          });
+        </script>
+        
+        
 
 
         <!--
@@ -456,53 +531,166 @@
         -->
 
         <section class="clients">
-
-          <h3 class="h3 clients-title">Clients</h3>
-
-          <ul class="clients-list has-scrollbar">
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-1-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-2-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-3-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-4-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-5-color.png" alt="client logo">
-              </a>
-            </li>
-
-            <li class="clients-item">
-              <a href="#">
-                <img src="./assets/images/logo-6-color.png" alt="client logo">
-              </a>
-            </li>
-
-          </ul>
-
+          <h3 class="h3 clients-title">Emoji 墻 - 隨機互動</h3>
+        
+          <!-- Emoji 墻 -->
+          <div class="emoji-wall" id="emojiWall"></div>
+        
+          <!-- 顯示隨機名言 -->
+          <div id="quote" class="quote"></div>
+        
+          <!-- 手動刷新按鈕 -->
+          <button id="refreshWall" class="refresh-btn">手動刷新 Emoji 墻</button>
         </section>
-
-      </article>
-
+        
+        <style>
+        /* 美化 Emoji 墻 */
+        .clients {
+          text-align: center;
+          margin: 30px auto;
+        }
+        
+        .emoji-wall {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 10px;
+          justify-items: center;
+          margin: 20px auto;
+          font-size: 30px;
+          max-width: 600px;
+        }
+        
+        .emoji-wall div {
+          cursor: pointer;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .emoji-wall div:hover {
+          transform: scale(1.3);
+          box-shadow: 0 0 10px #4caf50;
+          border-radius: 50%;
+        }
+        
+        /* 隨機名言區域 */
+        .quote {
+          margin-top: 20px;
+          font-size: 20px;
+          color: #ddd;
+          font-style: italic;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        
+        /* 手動刷新按鈕樣式 */
+        .refresh-btn {
+          padding: 10px 20px;
+          background-color: #4caf50;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          font-size: 16px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          margin-top: 20px; /* 按鈕與名言間距 */
+        }
+        
+        .refresh-btn:hover {
+          background-color: #45a049;
+        }
+        
+        /* Emoji 覆蓋樣式 */
+        .emoji-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 100px;
+          background: rgba(0, 0, 0, 0.8);
+          z-index: 9999;
+          opacity: 1;
+          transition: opacity 1s ease-out;
+        }
+        </style>
+        
+        <script>
+        // Emoji 分類
+        const emojiCategories = {
+          海洋: ["🐠", "🐟", "🐬", "🐳", "🦈", "🐚", "🌊", "🏝️", "🪸"],
+          冒險: ["🏕️", "🗺️", "🎒", "🏞️", "⛺", "🚤", "🚵‍♂️", "🏂"],
+          心情: ["😀", "😊", "🤩", "😍", "😎", "🥳", "🎉", "✨", "🌟", "❤️"]
+        };
+        
+        // 隨機名言
+        const quotes = [
+          "身體髮膚 受之父母 若有Tattoo 光宗耀祖",
+          "考試都不會 不如在家睡",
+          "嘿 雖然我不知道發生了什麼事 但是我們是朋友",
+          "當大人太沒有意思了 我要當小孩",
+          "我美麗的星期天只剩下三個小時了",
+          "我是贏家 夾到娃娃 你是輸家 哭著回家找媽媽"
+        ];
+        
+        // 隨機生成 Emoji
+        const emojiWall = document.getElementById("emojiWall");
+        const quoteElement = document.getElementById("quote");
+        
+        // 生成 Emoji 墻
+        const generateEmojiWall = () => {
+          emojiWall.innerHTML = ""; // 清空 Emoji 墻
+          const allEmojis = [
+            ...emojiCategories.海洋,
+            ...emojiCategories.冒險,
+            ...emojiCategories.心情
+          ]; // 合併所有分類
+        
+          // 生成 18 個隨機 Emoji
+          for (let i = 0; i < 18; i++) {
+            const randomEmoji = allEmojis[Math.floor(Math.random() * allEmojis.length)];
+            const emojiElement = document.createElement("div");
+            emojiElement.textContent = randomEmoji;
+        
+            // 點擊 Emoji 時的動態效果
+            emojiElement.addEventListener("click", () => {
+              // 顯示隨機名言
+              const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+              quoteElement.textContent = randomQuote;
+        
+              // 創建單個 Emoji 覆蓋層
+              const emojiOverlay = document.createElement("div");
+              emojiOverlay.classList.add("emoji-overlay");
+              emojiOverlay.textContent = randomEmoji;  // 顯示被點擊的 Emoji
+        
+              // 將覆蓋層加入到頁面
+              document.body.appendChild(emojiOverlay);
+        
+              // 在 1 秒後隱藏覆蓋層
+              setTimeout(() => {
+                emojiOverlay.style.opacity = "0";
+                setTimeout(() => {
+                  emojiOverlay.remove();
+                }, 1000); // 等待動畫結束後移除
+              }, 1000);
+            });
+        
+            emojiWall.appendChild(emojiElement);
+          }
+        };
+        
+        // 初始化 Emoji 墻
+        generateEmojiWall();
+        
+        // 手動刷新按鈕
+        document.getElementById("refreshWall").addEventListener("click", generateEmojiWall);
+        
+        // 自動刷新 Emoji 墻（每隔 30 秒）
+        setInterval(generateEmojiWall, 30000);
+        </script>
+        </article>
 
 
 
