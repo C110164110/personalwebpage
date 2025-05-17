@@ -1114,6 +1114,25 @@ main {
   line-height: 1.6;
 }
 
+.blog-content {
+  margin-top: 20px;
+}
+
+.blog-image {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-3);
+  margin-bottom: 20px;
+}
+
+.blog-text {
+  color: var(--white-2);
+  font-size: var(--fs-4);
+  line-height: 1.8;
+}
+
+
 
 
 
