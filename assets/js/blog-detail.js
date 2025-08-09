@@ -5,7 +5,7 @@ const blogPosts = [
     category: "潛水",
     date: "2024-09-16",
     images: [
-      "assets/images/diving1.jpg"
+      "assets/images/diving1.JPG"
     ],
     content: [
       "潛入水中，彷彿進入另一個寧靜的世界。魚群悠游、陽光穿透水面形成閃爍的光斑，一切都讓人忘卻煩惱。",
@@ -21,7 +21,7 @@ const blogPosts = [
     images: [
       "assets/images/marathon1.jpg",
       "assets/images/marathon2.jpg",
-      "assets/images/marathon3.png"
+      "assets/images/marathon3.PNG"
     ],
     content: [
       "黑松沙士告訴我們 \"不放手 直到夢想到手\" ",
@@ -120,4 +120,5 @@ if (post) {
     content.appendChild(p);
   });
 }
+
 
