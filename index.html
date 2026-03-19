@@ -1,6 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+  <style> 
+    .avatar-box img { width: 80px; height: 80px; border-radius: 100%; object-fit: cover; } 
+    
+    /* 證照頁面專屬 CSS */
+    .filter-list {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+      padding-bottom: 5px;
+      overflow-x: auto;
+    }
+    .filter-item button {
+      color: var(--light-gray);
+      font-size: var(--fs-6);
+      transition: var(--transition-1);
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .filter-item button:hover { color: var(--light-gray-70); }
+    .filter-item button.active { color: var(--orange-yellow-crayola); }
 
+    .certificates-list { 
+      display: grid; 
+      grid-template-columns: 1fr; 
+      gap: 20px; 
+      min-height: 400px; /* 防止頁面高度跳動 */
+    }
+    @media (min-width: 580px) { .certificates-list { grid-template-columns: 1fr 1fr; } }
+    
+    .certificate-item {
+      background: var(--eerie-black-2);
+      padding: 20px;
+      border-radius: 14px;
+      border: 1px solid var(--jet);
+      box-shadow: var(--shadow-2);
+      cursor: pointer;
+      list-style: none;
+      display: none; /* 預設由 JS 控制顯示 */
+      animation: scaleUp 0.4s ease forwards;
+    }
+
+    .certificate-item.show { display: block; }
+
+    @keyframes scaleUp {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .certificate-img-box {
+      width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 15px; background: var(--jet);
+    }
+    .certificate-img-box img { width: 100%; height: 100%; object-fit: cover; }
+    .certificate-title { color: var(--white-2); font-size: var(--fs-6); font-weight: var(--fw-600); margin-bottom: 5px; }
+    .certificate-org { color: var(--orange-yellow-crayola); font-size: var(--fs-7); }
+
+    /* 分頁控制樣式 */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 30px;
+      padding: 20px 0;
+    }
+    .pagination button {
+      background: var(--eerie-black-2);
+      color: var(--white-2);
+      border: 1px solid var(--jet);
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: var(--transition-1);
+    }
+    .pagination button:hover:not(:disabled) { background: var(--jet); }
+    .pagination button.active {
+      background: var(--orange-yellow-crayola);
+      color: var(--smoky-black);
+      border-color: var(--orange-yellow-crayola);
+    }
+    .pagination button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* 證照預覽彈窗樣式 */
+    .cert-modal {
+     position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  background: rgba(0,0,0,0.7);
+  z-index: 9999;
+    }
+    .cert-modal.active { opacity: 1; pointer-events: all; display: flex;
+  justify-content: center;
+  align-items: center;}
+    .cert-modal-content { position: relative; max-width: 800px; width: 90%; text-align: center; }
+    .cert-modal-img { width: 100%; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.5); transform: scale(0.8); transition: 0.3s;}
+    .cert-modal-close-btn {
+      position: absolute; top: -50px; right: 0; color: white; font-size: 40px; background: none; border: none; cursor: pointer;
+    }
+    .cert-modal.active .cert-modal-img {
+  transform: scale(1);
+}
+  </style>
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +132,7 @@
 
   <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>圓形圖片</title> <style> .avatar-box img { width: 80px; /* 圖片寬度 */ height: 80px; /* 圖片高度 */ border-radius: 100%; /* 使圖片變成圓形 */ object-fit: cover; /* 保持圖片內容覆蓋且不變形 */ } </style>
 </head>
-
+ 
 <body>
 
   <!--
@@ -177,6 +283,10 @@
 
           <li class="navbar-item">
             <button class="navbar-link" data-nav-link>Resume</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Certificates</button>
           </li>
 
           <li class="navbar-item">
@@ -873,6 +983,148 @@
       </article>
 
 
+      <!-- CERTIFICATES -->
+      <article class="certificates" data-page="certificates">
+        <header><h2 class="h2 article-title">證照紀錄</h2></header>
+          <section class="certificates-section">
+          <ul class="filter-list">
+            <li class="filter-item"><button class="active" data-cert-filter-btn>全部</button></li>
+            <li class="filter-item"><button data-cert-filter-btn>潛水</button></li>
+            <li class="filter-item"><button data-cert-filter-btn>電腦資訊</button></li>
+            <li class="filter-item"><button data-cert-filter-btn>勞動部</button></li>
+            <li class="filter-item"><button data-cert-filter-btn>其他</button></li>
+          </ul>
+          <ul class="certificates-list">
+            <li class="certificate-item" data-category="潛水" data-cert-img="./assets/images/cert1.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/cert1.jpg" alt="PADI" loading="lazy">
+              </div>
+              <h4 class="certificate-title">PADI 開放水域潛水員</h4>
+              <p class="certificate-org">PADI 國際專業潛水教練協會</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/IC3 Certification  Global Standard 5.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/IC3 Certification  Global Standard 5.jpg" alt="Certification" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Certification  Global Standard 5</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/IC3 Computing Fundamentals  Global Standard 5.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/IC3 Computing Fundamentals  Global Standard 5.jpg" alt="Computing" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Computing Fundamentals  Global Standard 5</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/IC3 Key Applications  Global Standard 5.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/IC3 Key Applications  Global Standard 5.jpg" alt="Key Applications" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Key Applications  Global Standard 5</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/IC3 Living Online  Global Standard 5.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/IC3 Living Online  Global Standard 5.jpg" alt="Living Online" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Living Online  Global Standard 5</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/Mobility and Device Fundamentals.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/Mobility and Device Fundamentals.jpg" alt="Mobility and Device Fundamentals" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Mobility and Device Fundamentals</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/Networking Fundamentals.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/Networking Fundamentals.jpg" alt="Networking Fundamentals" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Networking Fundamentals</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/Office Access 2010.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/Office Access 2010.jpg" alt="Office Access 2010" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Office Access 2010</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/Office Excel 2010 Expert.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/Office Excel 2010 Expert.jpg" alt="Office Excel 2010 Expert" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Office Excel 2010 Expert</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/Office Word 2010 Expert.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/Office Word 2010 Expert.jpg" alt="Office Word 2010 Expert" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Office Word 2010 Expert</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+            <li class="certificate-item" data-category="電腦資訊" data-cert-img="./assets/images/mos/Security Fundamentals.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/mos/Security Fundamentals.jpg" alt="Security Fundamentals" loading="lazy">
+              </div>
+              <h4 class="certificate-title">IC3 Security Fundamentals</h4>
+              <p class="certificate-org">MOS 微軟國際證照</p>
+            </li>
+              <li class="certificate-item" data-category="勞動部" data-cert-img="./assets/images/勞動部/氬氣鎢極電銲.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/勞動部/氬氣鎢極電銲.jpg" alt="氬氣鎢極電銲" loading="lazy">
+              </div>
+              <h4 class="certificate-title">氬氣鎢極電銲</h4>
+              <p class="certificate-org">勞動部</p>
+            </li>
+            <li class="certificate-item" data-category="勞動部" data-cert-img="./assets/images/勞動部/硬體裝修乙級.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/勞動部/硬體裝修乙級.jpg" alt="硬體裝修乙級" loading="lazy">
+              </div>
+              <h4 class="certificate-title">硬體裝修乙級</h4>
+              <p class="certificate-org">勞動部</p>
+            </li>
+            <li class="certificate-item" data-category="勞動部" data-cert-img="./assets/images/勞動部/電腦硬體裝修丙 級.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/勞動部/電腦硬體裝修丙 級.jpg" alt="電腦硬體裝修丙 級" loading="lazy">
+              </div>
+              <h4 class="certificate-title">電腦硬體裝修丙級</h4>
+              <p class="certificate-org">勞動部</p>
+            </li>
+            <li class="certificate-item" data-category="勞動部" data-cert-img="./assets/images/勞動部/電腦軟體應用乙級.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/勞動部/電腦軟體應用乙級.jpg" alt="電腦軟體應用乙級" loading="lazy">
+              </div>
+              <h4 class="certificate-title">電腦軟體應用乙級</h4>
+              <p class="certificate-org">勞動部</p>
+            </li>
+            <li class="certificate-item" data-category="勞動部" data-cert-img="./assets/images/勞動部/電腦軟體應用丙級.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/勞動部/電腦軟體應用丙級.jpg" alt="電腦軟體應用丙級" loading="lazy">
+              </div>
+              <h4 class="certificate-title">電腦軟體應用丙級</h4>
+              <p class="certificate-org">勞動部</p>
+            </li>
+            <li class="certificate-item" data-category="勞動部" data-cert-img="./assets/images/勞動部/網路架設丙級.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/勞動部/網路架設丙級.jpg" alt="網路架設丙級" loading="lazy">
+              </div>
+              <h4 class="certificate-title">網路架設丙級</h4>
+              <p class="certificate-org">勞動部</p>
+            </li>
+            <li class="certificate-item" data-category="其他" data-cert-img="./assets/images/勞動部/商教英檢4級.jpg">
+              <div class="certificate-img-box">
+                <img src="./assets/images/勞動部/商教英檢4級.jpg" alt="商教英檢4級" loading="lazy">
+              </div>
+              <h4 class="certificate-title">商教英檢4級</h4>
+              <p class="certificate-org">商業教育協會</p>
+            </li>
+          </ul>
+           <div class="pagination" id="pagination-container"></div>
+        </section>
+      </article>
 
 
 
@@ -1092,22 +1344,150 @@
 
   </main>
 
+  <!-- 彈窗結構 -->
+  <div class="cert-modal" data-cert-modal>
+    <div class="cert-modal-content">
+      <button class="cert-modal-close-btn" data-cert-modal-close>&times;</button>
+      <img src="" alt="預覽" class="cert-modal-img" data-cert-modal-img>
+    </div>
+  </div>
 
-
-
-
-
-  <!--
-    - custom js link
-  -->
-  <script src="./assets/js/script.js"></script>
-
-  <!--
-    - ionicon link
-  -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // 導航切換邏輯 (與 script.js 保持一致但確保觸發更新)
+      const navLinks = document.querySelectorAll('[data-nav-link]');
+      const pages = document.querySelectorAll('[data-page]');
+
+      navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+          const target = this.textContent.toLowerCase().trim();
+          pages.forEach(page => {
+            if (page.dataset.page === target) {
+              page.classList.add('active');
+              // 如果切換到證照頁，強制執行一次顯示更新
+              if(target === 'certificates') updateDisplay();
+            } else {
+              page.classList.remove('active');
+            }
+          });
+          navLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // 2. 分頁與分類邏輯
+      const ITEMS_PER_PAGE = 6;
+      let currentPage = 1;
+      let currentCategory = "全部";
+
+      const certItems = Array.from(document.querySelectorAll('.certificate-item'));
+      const paginationContainer = document.getElementById('pagination-container');
+      const filterBtns = document.querySelectorAll('[data-cert-filter-btn]');
+
+      function updateDisplay() {
+        // 先過濾分類
+        const filteredItems = certItems.filter(item => {
+          return currentCategory === "全部" || item.dataset.category === currentCategory;
+        });
+
+        const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
+        if (currentPage > totalPages) currentPage = totalPages || 1;
+
+        // 隱藏所有，只顯示當前頁面
+        certItems.forEach(item => item.classList.remove('show'));
+        
+        const start = (currentPage - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+        
+        filteredItems.slice(start, end).forEach(item => item.classList.add('show'));
+
+        renderPagination(totalPages);
+      }
+
+      function renderPagination(totalPages) {
+        paginationContainer.innerHTML = '';
+        if (totalPages <= 1) return;
+
+        // 上一頁按鈕
+        const prevBtn = document.createElement('button');
+        prevBtn.innerText = 'Prev';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => { currentPage--; updateDisplay(); window.scrollTo(0, 0); };
+        paginationContainer.appendChild(prevBtn);
+
+        // 頁碼
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement('button');
+          btn.innerText = i;
+          if (i === currentPage) btn.classList.add('active');
+          btn.onclick = () => { currentPage = i; updateDisplay(); window.scrollTo(0, 0); };
+          paginationContainer.appendChild(btn);
+        }
+
+        // 下一頁按鈕
+        const nextBtn = document.createElement('button');
+        nextBtn.innerText = 'Next';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = () => { currentPage++; updateDisplay(); window.scrollTo(0, 0); };
+        paginationContainer.appendChild(nextBtn);
+      }
+
+      // 篩選按鈕事件
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          currentCategory = this.textContent.trim();
+          currentPage = 1;
+          filterBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          updateDisplay();
+        });
+      });
+
+      // 彈窗邏輯
+      const certModal = document.querySelector('.cert-modal');
+      const certModalImg = document.querySelector('[data-cert-modal-img]');
+      const certCloseBtn = document.querySelector('[data-cert-modal-close]');
+
+      document.querySelector('.certificates-list').addEventListener('click', (e) => {
+        const item = e.target.closest('.certificate-item');
+        if (item) {
+          const imgSrc = item.getAttribute('data-cert-img');
+          certModalImg.src = imgSrc;
+          certModal.classList.add('active');
+        }
+      });
+
+      certCloseBtn.addEventListener('click', () => certModal.classList.remove('active'));
+
+      // 重要：初始化顯示，讓內容在頁面載入時就自動出現
+      updateDisplay();
+    });
+    const certModal = document.querySelector('.cert-modal');
+const certModalImg = document.querySelector('.cert-modal img');
+
+// 開啟（你原本應該已有）
+document.querySelectorAll('.certificate-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const img = item.getAttribute('data-cert-img');
+    certModalImg.src = img;
+    certModal.style.display = 'flex';
+  });
+});
+
+// ⭐ 關閉（最穩版本）
+certModal.addEventListener('click', () => {
+  certModal.style.display = 'none';
+});
+
+// ⭐ 防止點圖片關閉
+certModalImg.addEventListener('click', (e) => {
+  e.stopPropagation();
+});
+
+  </script>
 </body>
 
 </html>
